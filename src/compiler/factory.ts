@@ -2499,14 +2499,14 @@ namespace ts {
     /* @internal */
     export function getOrCreateEmitNode(node: Node) {
         if (!node.emitNode) {
-            if (isParseTreeNode(node)) {
-                // To avoid holding onto transformation artifacts, we keep track of any
-                // parse tree node we are annotating. This allows us to clean them up after
-                // all transformations have completed.
-                if (node.kind === SyntaxKind.SourceFile) {
-                    return node.emitNode = { annotatedNodes: [node] };
-                }
+            // To avoid holding onto transformation artifacts, we keep track of any
+            // parse tree node we are annotating. This allows us to clean them up after
+            // all transformations have completed.
+            if (node.kind === SyntaxKind.SourceFile) {
+                return node.emitNode = { annotatedNodes: [node] };
+            }
 
+            if (isParseTreeNode(node)) {
                 const sourceFile = getSourceFileOfNode(node);
                 getOrCreateEmitNode(sourceFile).annotatedNodes.push(node);
             }
